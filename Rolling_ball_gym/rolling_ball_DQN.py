@@ -106,7 +106,7 @@ class Dqn():
         self.gamma = gamma
         self.batch_size = batch_size
         self.tau = tau
-        self.F = 500
+        self.update_frequency = 500
         self.eps_start = eps_start
         self.eps_end = eps_end
         self.eps_decay = eps_decay
@@ -180,18 +180,21 @@ class Dqn():
 
 
 
-        # !!!!!!!!!!!!!! Calculate the target !!!!!!!!!!!!!!
+        # Get Q-value for time t+1
         state_action_values = self.Q_net(state_batch).gather(1, action_batch)
         next_state_values = torch.zeros(batch_size, device=self.device)
         with torch.no_grad():
             next_state_values[non_final_mask] = self.target_net(non_final_next_states).max(1).values
-        expected_state_action_values = (next_state_values * self.gamma) + reward_batch
-        
+
+#       !!!!!!!!!!!!!! Calculate target !!!!!!!!!!!!!!
+#
+#       target = 
+#       
 
 
         # Training the network by updating its weight
         criterion = nn.SmoothL1Loss()
-        loss = criterion(state_action_values, expected_state_action_values.unsqueeze(1))
+        loss = criterion(state_action_values, target.unsqueeze(1))
         self.optimizer.zero_grad()
         loss.backward()
         # In-place gradient clipping
