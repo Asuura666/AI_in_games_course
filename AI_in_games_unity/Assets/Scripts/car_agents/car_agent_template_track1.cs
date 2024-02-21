@@ -5,17 +5,12 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
-public class car_agent_template : car_agent
+public class car_agent_template_track1 : car_agent
 {
-    /// <summary>
-    /// Call back of the Unity Start() function.
-    /// It is called at the instantiation of a car_agent game object.
-    /// In this project, the base Start() function is used to instantiate car_agent variables.
-    /// </summary>
-    protected override void _start()
-    {
 
-    }
+    // To set in inspector
+    [SerializeField] private Transform toSet_training_positions;
+
 
     /// <summary>
     /// Call back of the mlagent OnEpisodeBegin() function.
@@ -24,7 +19,13 @@ public class car_agent_template : car_agent
     /// </summary>
     protected override void _onEpisodeBegin()
     {
-        
+        // We randomly select one starting point at the beginning of the episode
+        for(int i=0; i<toSet_training_positions.transform.childCount; i++)
+        {
+            toSet_training_positions.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        positionStep = Random.Range(0, toSet_training_positions.transform.childCount);
+        toSet_training_positions.transform.GetChild(positionStep).gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -34,7 +35,7 @@ public class car_agent_template : car_agent
     /// <returns>Return the transform of the wanted target.</returns>
     protected override Transform _getTarget()
     {
-        return null;
+        return toSet_training_positions.transform.GetChild(positionStep).GetChild(1);
     }
     
     /// <summary>
@@ -45,7 +46,7 @@ public class car_agent_template : car_agent
     /// <returns>Return the transform of the wanted "start" object.</returns>
     protected override Transform _getStart()
     {
-        return null;
+        return toSet_training_positions.transform.GetChild(positionStep).GetChild(0);  
     }
 
     /// <summary>
@@ -55,7 +56,7 @@ public class car_agent_template : car_agent
     /// <param name="sensor">Vector listing all the agent observations</param>
     public override void CollectObservations(VectorSensor sensor)
     {
-                
+        //TODO
     }
 
     /// <summary>
@@ -66,7 +67,7 @@ public class car_agent_template : car_agent
     /// </summary>
     protected override void _fixRewards()
     {
-        
+        //TODO
     }
 
     /// <summary>
@@ -78,11 +79,7 @@ public class car_agent_template : car_agent
     {
         if(tag == "Death")
         {
-
-        }
-        if(tag == "Target")
-        {
-
+            //TODO
         }
     }
     
@@ -98,25 +95,29 @@ public class car_agent_template : car_agent
     {
         if(is_inside)
         {
-            if(tag == "Death")
-            {
-
-            }
             if(tag == "Target")
             {
+                //TODO
+
+                // When the target is reached, we switch to the next target.
+                toSet_training_positions.transform.GetChild(positionStep).gameObject.SetActive(false);
+                if(positionStep + 1 >= toSet_training_positions.transform.childCount)
+                {
+                    positionStep = 0;
+                }
+                else
+                {
+                    positionStep++;
+                }
                 
+                toSet_training_positions.transform.GetChild(positionStep).gameObject.SetActive(true);
+                target = toSet_training_positions.transform.GetChild(positionStep).GetChild(1);
+                target.position = toSet_training_positions.transform.GetChild(positionStep).GetChild(1).position;
             }
         }
         else
         {
-            if(tag == "Death")
-            {
 
-            }
-            if(tag == "Target")
-            {
-                
-            }
         }
     }
 
@@ -130,6 +131,7 @@ public class car_agent_template : car_agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //Put your actions here.
+        //TODO
 
         _fixRewards();
     }
