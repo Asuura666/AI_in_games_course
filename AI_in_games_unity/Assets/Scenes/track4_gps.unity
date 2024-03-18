@@ -1513,10 +1513,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f425b732b7a11d49ba45892b1a02dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug_calculate_navigation: 0
   start_point: {fileID: 40482990}
   end_point: {fileID: 0}
-  paths: []
-  debug_calculate_navigation: 0
   roads: []
   active_target: {fileID: 0}
 --- !u!4 &1450534442
@@ -2086,7 +2085,7 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: d070298e5bc02d045950e434fb7def2f, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 513
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
   m_DetailObjectDistance: 80

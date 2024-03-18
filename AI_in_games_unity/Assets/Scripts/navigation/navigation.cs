@@ -33,6 +33,7 @@ public class navigation : MonoBehaviour
                 roads.Add(child.gameObject);
             }
         }
+        start_point = end_point = roads[0];
     }
 
     
@@ -152,7 +153,17 @@ public class navigation : MonoBehaviour
         }
         
 
-        
+        /// <summary>
+        /// Implement the pathfinding algorithm from a root vertex to a goal vertex.
+        /// Check the is_start and is_target flags in the nodes.
+        /// You can use the ID parameter of the nodes to store track
+        /// </summary>
+        /// <param name="nodes">List of the nodes in the graph. 
+        /// It is represented as {Node0, Node1, Node2, ...}</param>
+        /// <param name="edges">List of the edges in the graph.
+        /// It is represented as as list of arrays:
+        /// { [Node0,Node1], [Node0,Node2], [Node1,Node2] }</param>
+        /// <returns>Return a list of ordered nodes representing the path between the root and goal vertices.</returns>
         protected List<Node> pathfinding_algorithm(List<Node> nodes, List<int[]> edges)
         {
             List<Node> optimal_path = new List<Node>();

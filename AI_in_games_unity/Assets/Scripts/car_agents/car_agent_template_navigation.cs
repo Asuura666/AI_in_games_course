@@ -8,10 +8,8 @@ using Unity.MLAgents.Actuators;
 
 public class car_agent_template_navigation : car_agent
 {
-    // To set in inspector
-    [SerializeField] private GameObject toSet_navigation_gameObject;
-
-    private navigation nav_script;
+    // Initialisation
+    private navigation_correction nav_script;
 
     /// <summary>
     /// Call back of the Unity Start() function.
@@ -20,7 +18,7 @@ public class car_agent_template_navigation : car_agent
     /// </summary>
     protected override void _start()
     {
-        nav_script = this.transform.parent.GetComponentInChildren<navigation>();
+        nav_script = this.transform.parent.GetComponentInChildren<navigation_correction>();
     }
 
     /// <summary>
@@ -109,7 +107,7 @@ public class car_agent_template_navigation : car_agent
         }
         else
         {
-            AddReward(-0.00005f);
+            AddReward(-0.001f);
         }
         lastDistance = distanceToTarget;
 
