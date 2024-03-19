@@ -9,7 +9,7 @@ using Unity.MLAgents.Actuators;
 public class car_agent_template_navigation : car_agent
 {
     // Initialisation
-    private navigation_correction nav_script;
+    private navigation nav_script;
 
     /// <summary>
     /// Call back of the Unity Start() function.
@@ -18,7 +18,7 @@ public class car_agent_template_navigation : car_agent
     /// </summary>
     protected override void _start()
     {
-        nav_script = this.transform.parent.GetComponentInChildren<navigation_correction>();
+        nav_script = this.transform.parent.GetComponentInChildren<navigation>();
     }
 
     /// <summary>
