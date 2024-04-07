@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class navigation : MonoBehaviour
+public class navigation_correction : MonoBehaviour
 {
     // Gives a visualisation of the path found by the algorithm
     [SerializeField] private bool debug_calculate_navigation;
@@ -186,6 +186,61 @@ public class navigation : MonoBehaviour
             // From the list of search algorithms seen during the course,
             // implement one so that you can create the navigation system for the car agent.
             // Don't forget to use Node.ID to track visited nodes. 
+
+            /// BFS implementation
+            /// See course pseudo-code for details
+            bool is_found = false;
+            List<int> visited = new List<int>();
+            Queue<int> q = new Queue<int>();
+
+            visited.Add(current_node.ID);
+            q.Enqueue(current_node.ID);
+
+            while(q.Count != 0)
+            {
+                int current_id = q.Dequeue();
+                foreach(Node n in nodes)
+                {
+                    if(n.ID == current_id)
+                    {
+                        if(n.is_target)
+                        {
+                            is_found = true;
+                        }
+                        current_node = n;
+                        break;
+                    }
+                    
+                }
+                if(is_found)
+                {
+                    break;
+                }
+                foreach(int neighbor in get_neighbors(current_id, edges))
+                {
+                    if (!was_visited(visited, neighbor)) 
+                    {
+                        visited.Add(neighbor);
+                        foreach(Node n in nodes)
+                        {
+                            if(n.ID == neighbor)
+                            {
+                                n.previous_node = current_node;
+                            }
+                        }
+                        q.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            //Add discovered path to the optimal_path variable
+            while(current_node.previous_node != null)
+            {
+                optimal_path.Add(current_node);
+                current_node = current_node.previous_node;
+            }
+            optimal_path.Add(current_node);
+            optimal_path.Reverse();
 
             return optimal_path;
         }
