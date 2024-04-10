@@ -113,9 +113,9 @@ public class car_agent : Agent
 
     protected virtual void _fixRewards(){} 
 
-    protected virtual void _collisionRewards(string tag){}
+    protected virtual void _collisionRewards(string tag, Collision collision){}
 
-    protected virtual void _triggerRewards(string tag, bool is_inside){}
+    protected virtual void _triggerRewards(string tag, bool is_inside, Collider collider){}
 
     public override void OnActionReceived(ActionBuffers actionBuffers){
         _fixRewards();
@@ -124,17 +124,17 @@ public class car_agent : Agent
 
     private void OnCollisionEnter(Collision collision)
     {
-        _collisionRewards(collision.transform.tag);
+        _collisionRewards(collision.transform.tag, collision);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        _triggerRewards(other.tag, true);
+        _triggerRewards(other.tag, true, other);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _triggerRewards(other.tag, false);
+        _triggerRewards(other.tag, false, other);
     }
 
      int maxStep = 5000;

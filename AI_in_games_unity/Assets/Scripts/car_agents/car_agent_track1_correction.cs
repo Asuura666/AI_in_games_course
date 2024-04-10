@@ -93,7 +93,8 @@ public class car_agent_track1_correction : car_agent
     /// Use "AddReward(float)" or "SetReward(float)" to add reward goal.
     /// </summary>
     /// <param name="tag">Tag of the object colliding with the agent</param>
-    protected override void _collisionRewards(string tag)
+    /// <param name="collision">Hitbox of the colliding object</param>
+    protected override void _collisionRewards(string tag, Collision collision)
     {
         if(tag == "Death")
         {
@@ -110,7 +111,8 @@ public class car_agent_track1_correction : car_agent
     /// </summary>
     /// <param name="tag">Tag of the object colliding with the agent</param>
     /// <param name="is_inside">Set to true when the agent is inside the trigger hitbox, and to false when it is leaving.</param>
-    protected override void _triggerRewards(string tag, bool is_inside)
+    /// <param name="collider">Hitbox of the triggered object</param>
+    protected override void _triggerRewards(string tag, bool is_inside, Collider collider)
     {
         if(is_inside)
         {
