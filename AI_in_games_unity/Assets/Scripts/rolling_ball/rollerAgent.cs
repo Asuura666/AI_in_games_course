@@ -21,6 +21,7 @@ public class rollerAgent : Agent
     }
 
     public Transform Target;
+    public Transform Obstacle;
     public override void OnEpisodeBegin()
     {
        // If the Agent fell, zero its momentum
@@ -39,9 +40,10 @@ public class rollerAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Target and Agent positions
+        // Target and Agent positions   
         sensor.AddObservation(Target.localPosition);
         sensor.AddObservation(this.transform.localPosition);
+        sensor.AddObservation(Obstacle.localPosition);
 
         // Agent velocity
         sensor.AddObservation(rBody.velocity.x);
@@ -59,11 +61,17 @@ public class rollerAgent : Agent
 
         // Rewards
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
-
+        float distanceToObstacle = Vector3.Distance(this.transform.localPosition,Obstacle.localPosition);
         // Reached target
         if (distanceToTarget < 1.42f)
         {
             SetReward(1.0f);
+            EndEpisode();
+        }
+        // Touch Obstaclezs
+        if (distanceToObstacle < 1.42f)
+        {
+            SetReward(-2.0f);
             EndEpisode();
         }
 

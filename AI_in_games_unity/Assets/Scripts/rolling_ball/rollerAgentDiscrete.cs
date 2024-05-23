@@ -11,11 +11,22 @@ public class rollerAgentDiscrete : Agent
 {
     private Rigidbody rBody;
     private float lastDistanceToTarget;
+    //private float lastDistanceToObstacle;
     public Transform target;
+
+    //Create obstacle
+    public Transform obstacle;
+    public Transform obstacle1;
+    public Transform obstacle2;
+    public Transform obstacle3;
+    public Transform obstacle4;
+    public Transform obstacle5;
+    public Transform obstacle6;
     void Start () 
     {
         rBody = GetComponent<Rigidbody>();
         lastDistanceToTarget = 1000f;
+        //lastDistanceToObstacle = 1000f;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -55,9 +66,15 @@ public class rollerAgentDiscrete : Agent
         this.transform.localPosition = new Vector3( 0, 0.5f, 0);
         
         // Move the target to a new spot
-        target.localPosition = new Vector3(Random.value * 8 - 4,
-                                           0.5f,
-                                           Random.value * 8 - 4);
+        target.localPosition = new Vector3(Random.value * 16 - 8,
+                                           1f,
+                                           Random.value * 16 - 8);
+        while((target.localPosition==obstacle.localPosition) && (target.localPosition==obstacle1.localPosition) && target.localPosition==obstacle2.localPosition && target.localPosition==obstacle3.localPosition && target.localPosition==obstacle4.localPosition && target.localPosition==obstacle5.localPosition && target.localPosition==obstacle6.localPosition)
+        {
+        target.localPosition = new Vector3(Random.value * 16 - 8,
+                                           1f,
+                                           Random.value * 16 - 8);
+        }
     }
 
     protected Vector2 distanceVector(Transform object1, Transform object2)
@@ -74,6 +91,13 @@ public class rollerAgentDiscrete : Agent
         //sensor.AddObservation(distanceVector(this.transform, target)); //2 observations
         sensor.AddObservation(this.transform.localPosition);
         sensor.AddObservation(target.localPosition);
+        sensor.AddObservation(obstacle.localPosition);
+        sensor.AddObservation(obstacle1.localPosition);
+        sensor.AddObservation(obstacle2.localPosition);
+        sensor.AddObservation(obstacle3.localPosition);
+        sensor.AddObservation(obstacle4.localPosition);
+        sensor.AddObservation(obstacle5.localPosition);
+        sensor.AddObservation(obstacle6.localPosition);
 
         // Agent velocity
         sensor.AddObservation(rBody.velocity.x);
@@ -120,25 +144,66 @@ public class rollerAgentDiscrete : Agent
 
         // Rewards
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, target.localPosition);
-
+        float distanceToObstacle = Vector3.Distance(this.transform.localPosition, obstacle.localPosition);
+        float distanceToObstacle1 = Vector3.Distance(this.transform.localPosition, obstacle1.localPosition);
+        float distanceToObstacle2 = Vector3.Distance(this.transform.localPosition, obstacle2.localPosition);
+        float distanceToObstacle3 = Vector3.Distance(this.transform.localPosition, obstacle3.localPosition);
+        float distanceToObstacle4 = Vector3.Distance(this.transform.localPosition, obstacle4.localPosition);
+        float distanceToObstacle5 = Vector3.Distance(this.transform.localPosition, obstacle5.localPosition);
+        float distanceToObstacle6 = Vector3.Distance(this.transform.localPosition, obstacle6.localPosition);
             // Getting closer or further from target
         if(distanceToTarget < lastDistanceToTarget)
         {
-            AddReward(0.1f);
+            AddReward(0.5f);
         }
         else
         {
-            AddReward(-0.1f);
+            AddReward(-0.5f);
         }
         lastDistanceToTarget = distanceToTarget;
-        
+    
             // Reached target
         if (distanceToTarget < 1.42f)
         {
             SetReward(1.0f);
             EndEpisode();
         }
-        
+        //Reache Obstacle
+        if (distanceToObstacle< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle);
+            SetReward(-0.01f);
+        }
+        if (distanceToObstacle1< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle1);
+            SetReward(-0.01f);
+        }
+        if (distanceToObstacle2< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle2);
+            SetReward(-0.01f);
+        }
+        if (distanceToObstacle3< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle3);
+            SetReward(-0.01f);
+        }
+        if (distanceToObstacle4< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle4);
+            SetReward(-0.01f);
+        }
+        if (distanceToObstacle5< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle5);
+            SetReward(-0.01f);
+        }
+        if (distanceToObstacle6< 1.44f)
+        {
+            //Debug.Log(distanceToObstacle6);
+            SetReward(-0.01f);
+        }
             // Fell off platform
         if (this.transform.localPosition.y < 0)
         {
@@ -151,7 +216,7 @@ public class rollerAgentDiscrete : Agent
     private void FixedUpdate()
     {
         
-        if(this.StepCount >= 500)
+        if(this.StepCount >= 1000)
         {
             SetReward(-0.5f);
             EndEpisode();
